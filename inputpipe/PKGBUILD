@@ -1,0 +1,48 @@
+pkgname=inputpipe
+pkgver=20130124
+pkgrel=1
+pkgdesc="Share /dev/input (mouse and keyboard) between two computers"
+
+arch=('i686' 'x86_64')
+url="https://github.com/baraban/inputpipe"
+license=('GPL2')
+depends=
+makedepends=
+
+source=()
+md5sums=()
+
+_gitroot="https://github.com/baraban/inputpipe.git"
+_gitname="inputpipe"
+
+
+build(){
+    cd "$srcdir"
+    msg "Connecting to GIT server...."
+
+    if [[ -d "$_gitname" ]]; then
+        cd "$_gitname" && git pull origin
+        msg "The local files are updated."
+    else
+        git clone "$_gitroot" "$_gitname"
+    fi
+
+    msg "GIT checkout done or server timeout"
+    msg "Starting build..."
+
+    rm -rf "$srcdir/$_gitname-build"
+    git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+    cd "$srcdir/$_gitname-build"
+
+    #
+    # BUILD HERE
+    #
+    make
+}
+
+package() {
+    install -d $pkgdir/usr/local/bin
+    cd "$srcdir/$_gitname-build"
+    install -m755 inputpipe-client $pkgdir/usr/local/bin
+    install -m755 inputpipe-server $pkgdir/usr/local/bin
+}
