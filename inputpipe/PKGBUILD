@@ -6,8 +6,6 @@ pkgdesc="Share /dev/input (mouse and keyboard) between two computers"
 arch=('i686' 'x86_64')
 url="https://github.com/baraban/inputpipe"
 license=('GPL2')
-depends=
-makedepends=
 
 source=()
 md5sums=()
